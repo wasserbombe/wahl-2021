@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bundestagswahl 2021</title>
+
+        <meta charset="utf-8">
+
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body class="bg-light">
+        <div class="container">
+            <main>
+                <h1>Bundestagswahl 2021</h1>
+
+                <h2>Tweets im zeitlichen Verlauf</h2>
+                <div class="btn-group">
+                    <a href="#" class="btn btn-primary active">pro Stunde</a>
+                    <a href="#" class="btn btn-outline-primary">pro Tag</a>
+                </div>
+                <div id="chart-tweets_per_day"></div>
+
+                <h2>Aktuelle Themen</h2>
+                <div id="chart-current_hashtags"></div>
+    
+                <script src="js/jquery-3.6.0.min.js"></script>
+                <script src="js/bootstrap.bundle.min.js"></script>
+                <script src="js/highcharts/highcharts.js"></script>
+                <script src="/js/highcharts/modules/wordcloud.js"></script>
+                <script src="/js/main.js"></script>
+            </main>
+            <footer class="my-5 pt-5 text-muted text-center text-small">
+                <p class="mb-1">
+                    © 2021 Sebastian Fuhrmann. Made with ❤️ in Hemsbach. Because we love data.
+                </p>
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href="#" target="_blank">Datenschutzerklärung</a></li>
+                    <li class="list-inline-item"><a href="mailto:feedback@wahl-2021.eu">Feedback / Kontakt</a></li>
+                </ul>
+            </footer>
+        </div>
+    </body>
+</html>
