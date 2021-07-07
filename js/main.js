@@ -143,7 +143,6 @@
     var loadGeneralData = () => {
         var granularity = $("#granularity-selection a.active").data("granularity"); 
         API.getView('tweets-per-'+granularity).then((data) => {
-            console.log(data); 
             var series = {}; 
             data.forEach((row) => {
                 for (var k in row){
@@ -211,7 +210,6 @@
 
     
     API.getView('tweets-per-hour-per-search').then((data) => {
-        console.log(data); 
         var series = {}; 
         data.forEach((row) => {
             var seriesname = row.id + ' - ' + row.name; 
@@ -268,7 +266,6 @@
         console.log("Loading data for "+party+"...");
 
         API.getView('current-hashtags-by-party', { party: party }).then((data) => {
-            console.log(data); 
             var series = { 
                 name: 'Hashtag', 
                 type: 'wordcloud', 
@@ -303,7 +300,6 @@
             });
         });
         API.getView('current-hashtags-by-party-candidate', { party: party }).then((data) => {
-            console.log(data); 
             var series = { 
                 name: 'Hashtag', 
                 type: 'wordcloud', 
@@ -338,7 +334,6 @@
             });
         });
         API.getView('current-hashtags-by-party-account', { party: party }).then((data) => {
-            console.log(data); 
             var series = { 
                 name: 'Hashtag', 
                 type: 'wordcloud', 
