@@ -13,19 +13,70 @@
                 <h1>Bundestagswahl 2021</h1>
 
                 <h2>Tweets im zeitlichen Verlauf</h2>
-                <div class="btn-group">
-                    <a href="#" class="btn btn-primary active">pro Stunde</a>
-                    <a href="#" class="btn btn-outline-primary">pro Tag</a>
+                <div class="btn-group" id="granularity-selection">
+                    <a href="#" class="btn btn-primary active" data-granularity="hour">pro Stunde</a>
+                    <a href="#" class="btn btn-outline-primary" data-granularity="day">pro Tag</a>
                 </div>
                 <div id="chart-tweets_per_day"></div>
+                <div id="tweets-per-hour-per-search"></div>
+
+                <hr>
 
                 <h2>Aktuelle Themen</h2>
+                <div class="alert alert-primary d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                    <div>
+                        Wir suchen aktuell eine Möglichkeit, Themen nicht nur über die Hashtags oder Wörter, sondern auch anhand der Tweet-Inhalte zu erkennen und zu gruppieren (Automatische Klassifizierung über einen Classifier). Falls Du eine Idee hast, <a href="mailto:idee@wahl-2021.eu">lass' es uns wissen</a>!
+                    </div>
+                </div>
                 <div id="chart-current_hashtags"></div>
+                <div id="chart-hashtags-over-time"></div>
+
+                <h3>Themen nach Partei</h3>
+                <div class="btn-group" id="party-selection">
+                    <a class="btn btn-primary active" data-party="cdu">CDU/CSU</a>
+                    <a class="btn btn-outline-primary" data-party="spd">SPD</a>
+                    <a class="btn btn-outline-primary" data-party="gruene">Bündnis 90/Die Grünen</a>
+                    <a class="btn btn-outline-primary" data-party="linke">Die Linke</a>
+                    <a class="btn btn-outline-primary" data-party="fdp">FDP</a>
+                    <a class="btn btn-outline-primary" data-party="afd">AfD</a>
+                </div>
+                <div id="chart-party-current-hashtags"></div>
+                <div id="chart-party-current-hashtags-candidate"></div>
+                <div id="chart-party-current-hashtags-account"></div>
+
+                <hr>
+
+                <h2>
+                    Meta-Infos zu diesem Projekt
+                </h2>
+                <h3>Ausfälle Datenerfassung</h3>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Datum</th>
+                        <th scope="col">Teil</th>
+                        <th scope="col">Betroffener Zeitraum</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Beschreibung</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="table-warning">
+                        <th scope="row">07.07.2021</th>
+                        <td>Datenerfassung, Webseite</td>
+                        <td><nobr>2021-07-06 18:00</nobr> - <nobr>2021-07-07 9:00 Uhr</nobr></td>
+                        <td><span class="badge bg-warning text-dark">pending</span></td>
+                        <td>Durch ein Problem bei unserem Hoster Hetzner konnten beide Server (Webseite und Datenbankserver) nicht mehr gestartet werden und waren über Nacht offline. Das Problem wurde inzwischen gelöst; die Webseite ist wieder verfügbar, wir versuchen, die verlorenen Daten nachträglich von Twitter zu laden - rein rechnerisch fehlen etwa 35.000 Tweets und zugehörige Infos zur CDU/CSU und FDP.</td>
+                      </tr>
+                    </tbody>
+                  </table>
     
                 <script src="js/jquery-3.6.0.min.js"></script>
                 <script src="js/bootstrap.bundle.min.js"></script>
                 <script src="js/highcharts/highcharts.js"></script>
                 <script src="/js/highcharts/modules/wordcloud.js"></script>
+                <script src="/js/highcharts/modules/streamgraph.js"></script>
                 <script src="/js/main.js"></script>
             </main>
             <footer class="my-5 pt-5 text-muted text-center text-small">
@@ -37,6 +88,17 @@
                     <li class="list-inline-item"><a href="mailto:feedback@wahl-2021.eu">Feedback / Kontakt</a></li>
                 </ul>
             </footer>
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </symbol>
+                <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                </symbol>
+                <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </symbol>
+              </svg>
         </div>
     </body>
 </html>
