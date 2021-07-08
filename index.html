@@ -1,13 +1,33 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Bundestagswahl 2021</title>
-
         <meta charset="utf-8">
 
+        <title>Bundestagswahl 2021</title>
+
+        <!--
+            WELCOME TO THE SOURCE CODE!
+        -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@Wasserbombe" />
+        <meta name="twitter:creator" content="@Wasserbombe" />
+        <meta property="og:title" content="Bundestagswahl 2021: Twitter-Analyse und Wahlprogramme" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://wahl-2021.eu/" />
+        <meta property="og:image" content="https://wahl-2021.eu/assets/bundestag-769710_1920.jpg" />
+        <meta property="og:description" content="Twitter-Analyse zu Themengebieten, Kandidaten und Parteien zur Bundestagswahl 2021" />
+
         <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <style>
+            .btn-group {
+                margin-bottom: 10px;
+            }
+        </style>
     </head>
-    <body class="bg-light">
+    <body class="bg-dark text-light" data-darkmode="bg-dark text-light">
         <div class="container">
             <main>
                 <h1>Bundestagswahl 2021</h1>
@@ -16,6 +36,10 @@
                 </p>
                 <p>
                     Darüber hinaus werden zu gegebener Zeit die Wahlprogramme aller Parteien ergänzt und mit den tatsächlichen Themen der Parteien und ihrer Wähler auf Twitter verglichen - mehr dazu in unserer <a href="#roadmap">Roadmap</a>.
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="switch-darkmode" checked>
+                        <label class="form-check-label" for="switch-darkmode">Dark Mode</label>
+                    </div>
                 </p>
 
                 <h2>Tweets im zeitlichen Verlauf</h2>
@@ -48,7 +72,7 @@
                 <p>
                     Die folgende Grafik zeigt eine Übersicht über aktuell laufende Suchvorgänge mit der Anzahl der Tweets, die in Bezug zu dieser Suche stehen. 
                 </p>
-                <div id="tweets-per-hour-per-search"></div>
+                <div id="tweets-per-hour-per-search" style="height: 600px;"></div>
 
                 <hr>
 
@@ -60,7 +84,9 @@
                     </div>
                 </div>
                 <div id="chart-current_hashtags"></div>
-                <div id="chart-hashtags-over-time"></div>
+                <div id="chart-hashtags-over-time" style="height: 600px;"></div>
+
+                <hr>
 
                 <h3>Themen nach Partei</h3>
                 <p>
@@ -75,8 +101,15 @@
                     <a class="btn btn-outline-primary" data-party="afd">AfD</a>
                 </div>
                 <div id="chart-party-current-hashtags"></div>
-                <div id="chart-party-current-hashtags-candidate"></div>
-                <div id="chart-party-current-hashtags-account"></div>
+                <div class="row">
+                    <div class="col">
+                        <div id="chart-party-current-hashtags-candidate"></div>
+                    </div>    
+                    <div class="col">
+                        <div id="chart-party-current-hashtags-account"></div>
+                    </div>
+                </div>
+                <div id="chart-party-current-domains"></div>
 
                 <hr>
 
@@ -85,7 +118,7 @@
                 </h2>
                 <h3>Ausfälle Datenerfassung</h3>
                 <table class="table">
-                    <thead>
+                    <thead class="text-light" data-darkmode="text-light">
                         <tr>
                             <th scope="col">Datum</th>
                             <th scope="col">Teil</th>
@@ -95,34 +128,50 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="table-warning">
+                        <tr class="table-success">
                             <th scope="row">07.07.2021</th>
                             <td>Datenerfassung, Webseite</td>
                             <td><nobr>2021-07-06 18:00</nobr> - <nobr>2021-07-07 9:00 Uhr</nobr></td>
-                            <td><span class="badge bg-warning text-dark">pending</span></td>
-                            <td>Durch ein Problem bei unserem Hoster Hetzner konnten beide Server (Webseite und Datenbankserver) nicht mehr gestartet werden und waren über Nacht offline. Das Problem wurde inzwischen gelöst; die Webseite ist wieder verfügbar, wir versuchen, die verlorenen Daten nachträglich von Twitter zu laden - rein rechnerisch fehlen etwa 35.000 Tweets und zugehörige Infos zur CDU/CSU und FDP.</td>
+                            <td><span class="badge bg-success">resolved</span></td>
+                            <td>
+                                Durch ein Problem bei unserem Hoster Hetzner konnten beide Server (Webseite und Datenbankserver) nicht mehr gestartet werden und waren über Nacht offline. Das Problem wurde inzwischen gelöst; die Webseite ist wieder verfügbar, wir versuchen, die verlorenen Daten nachträglich von Twitter zu laden - rein rechnerisch fehlen etwa 35.000 Tweets und zugehörige Infos zur CDU/CSU und FDP.<br>
+                                <i>Resolution:</i> Wir konnten die fehlenden Daten nachträglich abrufen. 
+                            </td>
+                        </tr>
+                        <tr class="table-danger">
+                            <th scope="row">08.07.2021</th>
+                            <td>Datenerfassung</td>
+                            <td><nobr>2021-07-08 15:00</nobr> - <nobr>???</nobr></td>
+                            <td><span class="badge bg-danger">pending</span></td>
+                            <td>
+                                Aufgrund relativ hohen Tweetvolumens zu von uns ausgeführten Suchanfagen laufen wir leider immer wieder in Twitter API Limits. Wir rufen Daten nachträglich ab, jedoch könnten dadurch die Daten etwas verzögert angezeigt werden (derzeit: 15 min).<br>
+                                Darüber hinaus haben wir eine Bewerbung für Academic Research Access an Twitter geschickt. 
+                            </td>
                         </tr>
                     </tbody>
                 </table>
                 
                 <h3 id="roadmap">Roadmap</h3>
                 <p>
-                    Die Arbeit an diesem Projekt nimmt viel Zeit in Anspruch, daher kann nicht alles sofort umgesetzt werden. Wir priorisieren aktuell nach Daten, die wir nur jetzt ermitteln können (bspw. Twitter-Daten, die max. 7 Tage zurück reichen) und Daten, die wir auch später ermitteln und analysieren können (z.B. Newsfeeds). 
+                    Die Arbeit an diesem Projekt nimmt viel Zeit in Anspruch, daher kann nicht alles sofort umgesetzt werden. Wir priorisieren aktuell nach Daten, die wir nur jetzt ermitteln können (bspw. Twitter-Daten, die max. 7 Tage zurück reichen) und Daten, die wir auch später ermitteln und analysieren können (z.B. Newsfeeds, Wahlprogramme). 
                 </p>
                 <p>
                     Folgende Features sollen noch ergänzt werden, sofern die entsprechende Zeit dafür zur Verfügung steht: 
                 </p>
                 <ul>
                     <li>Auto-Classification von Tweets in Themen bzw. Themenbereiche (aktuell arbeiten wir anhand der Hashtags)</li>
+                    <li>Tone Analysis</li>
                     <li>Automatisches Parsen der Wahlprogramme aller Parteien und Vergleich mit Twitter-Daten</li>
                     <li>Import der Daten und Vergleich zur Bundestagswahl 2017</li>
+                    <li>Upgrade auf Twitter API v2, inklusive Conversations</li>
+                    <li>Jugendorganisationen der Parteien mit aufnehmen (Twitter API Limits?)</li>
                 </ul>
 
                 <h3>Daten</h3>
                 <p>
                     Die von uns hier genutzten Daten stellen wir gerne für jedermann zur Verfügung. Die Daten der Grafiken können über folgende URLs abgerufen werden. Bitte beim automatiserten Abruf einen User-Agent mit Kontaktdetails (E-Mail oder Nickname) angeben, sodass wir bei Änderungen benachrichtigen können.
                 </p>
-                <table class="table">
+                <table class="table text-light" data-darkmode="bg-dark text-light">
                     <thead>
                         <tr>
                         <th scope="col">View</th>
@@ -133,27 +182,27 @@
                     <tbody>
                         <tr>
                             <th scope="row"><a href="https://wahl-2021.eu/stats/api.php?view=tweets-per-day">tweets-per-day</a></th>
-                            <td><span class="badge bg-success">live</span></td>
+                            <td><span class="badge bg-success">aktiv</span></td>
                             <td>Tweets, Reichweite und Anzahl twitternder Nutzer pro Tag</td>
                         </tr>
                         <tr>
                             <th scope="row"><a href="https://wahl-2021.eu/stats/api.php?view=tweets-per-hour">tweets-per-hour</a></th>
-                            <td><span class="badge bg-success">live</span></td>
+                            <td><span class="badge bg-success">aktiv</span></td>
                             <td>Tweets, Reichweite und Anzahl twitternder Nutzer pro Stunde</td>
                         </tr>
                         <tr>
                             <th scope="row"><a href="https://wahl-2021.eu/stats/api.php?view=tweets-per-hour-per-search">tweets-per-hour-per-search</a></th>
-                            <td><span class="badge bg-warning text-dark">Deprecated</span></td>
+                            <td><span class="badge bg-warning text-dark">deprecated</span></td>
                             <td>Anzahl von Tweets zu konfigurierten Searchterms pro Stunde</td>
                         </tr>
                         <tr>
                             <th scope="row"><a href="https://wahl-2021.eu/stats/api.php?view=current-hashtags">current-hashtags</a></th>
-                            <td><span class="badge bg-success">live</span></td>
+                            <td><span class="badge bg-success">aktiv</span></td>
                             <td>Hashtags und Anzahl von Tweets mit diesem Hashtag der letzten 7 Tage</td>
                         </tr>
                         <tr>
                             <th scope="row"><a href="https://wahl-2021.eu/stats/api.php?view=current-hashtags-by-party">current-hashtags-by-party</a></th>
-                            <td><span class="badge bg-success">live</span></td>
+                            <td><span class="badge bg-success">aktiv</span></td>
                             <td>
                                 Hashtags und Anzahl von Tweets mit diesem Hashtag der letzten 7 Tage zu einer bestimmten Partei<br>
                                 Erforderlicher Parameter: <code>party</code> (one of spd, linke, cdu, afd, gruene, fdp, csu)
@@ -161,7 +210,7 @@
                         </tr>
                         <tr>
                         <th scope="row"><a href="https://wahl-2021.eu/stats/api.php?view=current-hashtags-by-party-candidate">current-hashtags-by-party-candidate</a></th>
-                            <td><span class="badge bg-success">live</span></td>
+                            <td><span class="badge bg-success">aktiv</span></td>
                             <td>
                                 Hashtags und Anzahl von Tweets mit diesem Hashtag der letzten 7 Tage von Kandidaten der angegeneben Partei<br>
                                 Erforderlicher Parameter: <code>party</code> (one of spd, linke, cdu, afd, gruene, fdp, csu)
@@ -169,21 +218,29 @@
                         </tr>
                         <tr>
                             <th scope="row"><a href="https://wahl-2021.eu/stats/api.php?view=current-hashtags-by-party-account">current-hashtags-by-party-account</a></th>
-                            <td><span class="badge bg-success">live</span></td>
+                            <td><span class="badge bg-success">aktiv</span></td>
                             <td>
                                 Hashtags und Anzahl von Tweets mit diesem Hashtag der letzten 7 Tage von Accounts der angegebenen Partei<br>
                                 Erforderlicher Parameter: <code>party</code> (one of spd, linke, cdu, afd, gruene, fdp, csu)
                             </td>
                         </tr>
                         <tr>
+                            <th scope="row"><a href="https://wahl-2021.eu/stats/api.php?view=current-domains-by-party">current-domains-by-party</a></th>
+                            <td><span class="badge bg-success">aktiv</span></td>
+                            <td>
+                                Domains und Anzahl von Tweets (letzten 7 Tage), die auf diese Domain verlinken und in Zusammenhang mit der angegebenen Datei stehen<br>
+                                Erforderlicher Parameter: <code>party</code> (one of spd, linke, cdu, afd, gruene, fdp, csu)
+                            </td>
+                        </tr>
+                        <tr>
                         <th scope="row"><a href="https://wahl-2021.eu/stats/api.php?view=hashtags-over-time">hashtags-over-time</a></th>
-                            <td><span class="badge bg-success">live</span></td>
+                            <td><span class="badge bg-success">aktiv</span></td>
                             <td>Hashtags und Anzahl von Tweets mit diesem Hashtag pro Tag. Es wird auf relevante Hashtags (= Durchschnittliche Anzahl von Tweets mit diesem Hashtag pro Tag ist größer 3) gefiltert.</td>
                         </tr>
                     </tbody>
                 </table>
                 <p>
-                    Darüber hinaus stellen wir bei Interesse gerne von uns erfasste Rohdaten zur Verfügung, entweder als Stream/MySQL-Zugang oder als MySQL-Export. Dazu bitte eine kurze E-Mail an <a href="mailto:daten@wahl-2021.eu">daten@wahl-2021.eu</a>. 
+                    Darüber hinaus stellen wir bei Interesse gerne von uns erfasste Rohdaten zur Verfügung, entweder als Stream/MySQL-Zugang oder als MySQL-Export. Für Twitter-Daten berücksichtigen wir hierbei die <a href="https://developer.twitter.com/en/developer-terms/more-on-restricted-use-cases" target="_blank">Twitter Developer Terms</a> ("Redistribution of Twitter content"). Dazu bitte eine kurze E-Mail an <a href="mailto:daten@wahl-2021.eu">daten@wahl-2021.eu</a>. 
                 </p>
     
                 <script src="js/jquery-3.6.0.min.js"></script>
@@ -191,6 +248,10 @@
                 <script src="js/highcharts/highcharts.js"></script>
                 <script src="/js/highcharts/modules/wordcloud.js"></script>
                 <script src="/js/highcharts/modules/streamgraph.js"></script>
+                <script src="/js/highcharts/modules/annotations.js"></script>
+                <script src="/js/highcharts/modules/networkgraph.js"></script>
+
+                
                 <script src="/js/main.js"></script>
             </main>
             <footer class="my-5 pt-5 text-muted text-center text-small">

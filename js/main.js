@@ -32,7 +32,7 @@
         for (var name in series){
             if (series.hasOwnProperty(name)){
                 all_series.push({
-                    name: name, 
+                    name: "#" + name, 
                     data: series[name],
                     cursor: 'pointer',
                     events: {
@@ -149,7 +149,7 @@
                     if (granularity == "hour"){
                         if (row.hasOwnProperty(k) && k != "hour"){
                             if (!series[k]) series[k] = []; 
-                            series[k].push([new Date(row.hour+':00:00').getTime(), row[k]]);
+                            series[k].push([new Date(row.hour.replace(" ","T")+':00:00').getTime(), row[k]]);
                         }
                     } else {
                         if (row.hasOwnProperty(k) && k != "date"){
@@ -164,6 +164,8 @@
                 credits: {
                     enabled: false
                 },
+                chart: {
+                },
                 title: {
                     text: 'Tweets pro ' + (granularity == "day"?"Tag":"Stunde")
                 },
@@ -171,7 +173,13 @@
                     text: 'seit 01.07.2021'
                 },
                 xAxis: {
-                    type: "datetime"
+                    type: "datetime",
+                    plotBands: [{
+                        color: 'rgba(0, 0, 0, 0.2)',
+                        from: new Date().getTime()-2*60*60*1000,
+                        to: new Date().getTime(),
+                        zIndex: -6
+                    }]
                 },
                 yAxis: [{
                     title: {
@@ -195,6 +203,29 @@
                     "data": series["reach"],
                     "type": "column",
                     "yAxis": 1
+                }],
+                annotations: [{
+                    labels: [{
+                        point: {
+                            x: new Date("2021-07-01").getTime(),
+                            xAxis: 0,
+                            y: 2000,
+                            yAxis: 0
+                        },
+                        text: 'Datenerfassung: Allg. Tweets Bundestagswahl 2021'
+                    }, {
+                        point: {
+                            x: new Date("2021-07-06").getTime(),
+                            xAxis: 0,
+                            y: 2000,
+                            yAxis: 0
+                        },
+                        text: 'Datenerfassung: Partein + Spitzenkandidaten'
+                    }],
+                    labelOptions: {
+                        backgroundColor: 'rgba(255,255,255,0.5)',
+                        borderColor: 'silver'
+                    }
                 }]
             });
         });
@@ -214,15 +245,17 @@
         data.forEach((row) => {
             var seriesname = row.id + ' - ' + row.name; 
             if (!series[seriesname]) series[seriesname] = []; 
-                series[seriesname].push([new Date(row.hour+':00:00').getTime(), row.tweets]);
+                series[seriesname].push([new Date(row.hour.replace(" ","T")+':00:00').getTime(), row.tweets]);
         });
 
         var all_series = []; 
         for (var id in series){
             if (series.hasOwnProperty(id)){
                 all_series.push({
+                    type: "area",
                     name: id,
-                    data: series[id]
+                    data: series[id],
+                    stack: 0
                 });
             }
         }
@@ -238,7 +271,13 @@
                 text: 'seit 01.07.2021'
             },
             xAxis: {
-                type: "datetime"
+                type: "datetime",
+                plotBands: [{
+                    color: 'rgba(0, 0, 0, 0.2)',
+                    from: new Date().getTime()-2*60*60*1000,
+                    to: new Date().getTime(),
+                    zIndex: -6
+                }]
             },
             yAxis: [{
                 title: {
@@ -251,7 +290,10 @@
             },
             plotOptions: {
                 series: {
-                    connectNulls: false
+                    connectNulls: true
+                },
+                area: {
+                    stacking: 'normal'
                 }
             },            
             tooltip: {
@@ -273,7 +315,7 @@
                 cursor: 'pointer',
                 events: {
                     click: function (event) {
-                        window.open('https://twitter.com/search?q='+encodeURIComponent(event.point.name)+'&src=typed_query&f=live');
+                        window.open('https://twitter.com/search?q='+encodeURIComponent(event.point.name + " AND " + party)+'&src=typed_query&f=live');
                     }
                 }
             };
@@ -290,6 +332,46 @@
                 },
                 title: {
                     text: 'Häufig genutzte Hashtags im Zusammenhang mit ' + party.toUpperCase()
+                },
+                subtitle: {
+                    text: '(letzte 7 Tage)'
+                },
+                series: [
+                    series
+                ]
+            });
+        });
+        
+        API.getView('current-domains-by-party', { party: party }).then((data) => {
+            var series = { 
+                name: 'Tweets', 
+                type: 'wordcloud', 
+                data: [],
+                cursor: 'pointer',
+                rotation: {
+                    from: 0, 
+                    to: 0,
+                    orientations: 1
+                },
+                events: {
+                    click: function (event) {
+                       // window.open('https://twitter.com/search?q='+encodeURIComponent(event.point.name + " AND " + party)+'&src=typed_query&f=live');
+                    }
+                }
+            };
+            var c = 0; 
+            data.forEach((e, i) => {
+                if (c < 200){
+                    series.data.push({ name: e.domain, weight: e.tweets });
+                    c++; 
+                }
+            });
+            Highcharts.chart('chart-party-current-domains', {
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: 'Häufig verlinkte Domains im Zusammenhang mit ' + party.toUpperCase()
                 },
                 subtitle: {
                     text: '(letzte 7 Tage)'
@@ -376,4 +458,102 @@
         loadPartyRelatedData(); 
     });
     loadPartyRelatedData(); 
+
+    $("#switch-darkmode").on("change", function (){
+        var darkModeEnabled = this.checked;
+        if (darkModeEnabled){
+            $("[data-darkmode~='text-light']").removeClass("text-dark").addClass("text-light");
+            $("[data-darkmode~='text-dark']").removeClass("text-light").addClass("text-dark");
+
+            $("[data-darkmode~='bg-light']").removeClass("bg-dark").addClass("bg-light");
+            $("[data-darkmode~='bg-dark']").removeClass("bg-light").addClass("bg-dark");
+        } else {
+            $("[data-darkmode~='text-light']").removeClass("text-light").addClass("text-dark");
+            $("[data-darkmode~='text-dark']").removeClass("text-dark").addClass("text-light");
+
+            $("[data-darkmode~='bg-light']").removeClass("bg-light").addClass("bg-dark");
+            $("[data-darkmode~='bg-dark']").removeClass("bg-dark").addClass("bg-light");
+        }
+    });
+
+    /*API.getView("nodegraph-test2").then((data) => {
+        console.log(data);
+       // network-test
+       // Add the nodes option through an event call. We want to start with the parent
+        // item and apply separate colors to each child element, then the same color to
+        // grandchildren.
+        Highcharts.addEvent(
+            Highcharts.Series,
+            'afterSetOptions',
+            function (e) {
+                var colors = Highcharts.getOptions().colors,
+                    i = 0,
+                    nodes = {};
+
+                if (
+                    this instanceof Highcharts.seriesTypes.networkgraph &&
+                    e.options.id === 'lang-tree'
+                ) {
+                    e.options.data.forEach(function (link) {
+
+                        if (link[0] === 'Proto Indo-European') {
+                            nodes['Proto Indo-European'] = {
+                                id: 'Proto Indo-European',
+                                marker: {
+                                    radius: 20
+                                }
+                            };
+                            nodes[link[1]] = {
+                                id: link[1],
+                                marker: {
+                                    radius: 10
+                                },
+                                color: colors[i++]
+                            };
+                        } else if (nodes[link[0]] && nodes[link[0]].color) {
+                            nodes[link[1]] = {
+                                id: link[1],
+                                color: nodes[link[0]].color
+                            };
+                        }
+                    });
+
+                    e.options.nodes = Object.keys(nodes).map(function (id) {
+                        return nodes[id];
+                    });
+                }
+            }
+        );
+
+        Highcharts.chart('network-test', {
+            chart: {
+                type: 'networkgraph',
+                height: '100%'
+            },
+            title: {
+                text: 'The Indo-European Language Tree'
+            },
+            subtitle: {
+                text: 'A Force-Directed Network Graph in Highcharts'
+            },
+            plotOptions: {
+                networkgraph: {
+                    keys: ['from', 'to'],
+                    layoutAlgorithm: {
+                        enableSimulation: true,
+                        friction: -0.9
+                    }
+                }
+            },
+            series: [{
+                dataLabels: {
+                    enabled: true,
+                    linkFormat: ''
+                },
+                id: 'lang-tree',
+                data: data
+            }]
+        });
+ 
+    });*/
 })(); 

@@ -16,6 +16,9 @@
         'current-hashtags-by-party-account' => array(
             'party' => $parties
         ),
+        'current-domains-by-party' => array(
+            'party' => $parties
+        ),
     ];
 
     foreach ($views as $view => $config){
