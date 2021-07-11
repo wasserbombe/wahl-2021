@@ -77,7 +77,7 @@
                                         COUNT(*) AS 'tweets'
                                     FROM hashtag2tweet ht
                                     JOIN tweets t ON t.`id` = ht.`tweet_id`
-                                    WHERE t.`created_at_ts` > UNIX_TIMESTAMP()-60*60*24*7 AND LOWER(ht.`hashtag`) NOT IN (SELECT sw.`word` FROM stopwords sw WHERE sw.`lang` = 'de')
+                                    WHERE t.`created_at_ts` > UNIX_TIMESTAMP()-60*60*24*14 AND LOWER(ht.`hashtag`) NOT IN (SELECT sw.`word` FROM stopwords sw WHERE sw.`lang` = 'de')
                                     GROUP BY ht.`hashtag`
                                     ORDER BY COUNT(*) DESC;");
             $res["data"] = $data; 
@@ -92,7 +92,7 @@
                                         JOIN tweets t ON t.`id` = ut.`tweet_id`
                                         JOIN searches_tweets st ON t.`id` = st.`tweet_id`
                                         JOIN searches s ON s.`id` = st.`search_id`
-                                        WHERE s.`party` = ".$DB_TWT->prep($_REQUEST["party"])." AND t.`created_at_ts` > UNIX_TIMESTAMP()-60*60*24*7 AND REPLACE(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(u.`expanded_url`, '/', 3), '://', -1), '/', 1), '?', 1), 'www.', '') NOT IN ('twitter.com','mesonet.agron.iastate.edu')
+                                        WHERE s.`party` = ".$DB_TWT->prep($_REQUEST["party"])." AND t.`created_at_ts` > UNIX_TIMESTAMP()-60*60*24*14 AND REPLACE(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(u.`expanded_url`, '/', 3), '://', -1), '/', 1), '?', 1), 'www.', '') NOT IN ('twitter.com','mesonet.agron.iastate.edu')
                                         GROUP BY REPLACE(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(u.`expanded_url`, '/', 3), '://', -1), '/', 1), '?', 1), 'www.', '')
                                         ORDER BY COUNT(*) DESC;");
                 $res["data"] = $data; 
@@ -110,7 +110,7 @@
                                         JOIN tweets t ON t.`id` = ht.`tweet_id`
                                         JOIN searches_tweets st ON t.`id` = st.`tweet_id`
                                         JOIN searches s ON s.`id` = st.`search_id`
-                                        WHERE s.`party` = ".$DB_TWT->prep($_REQUEST["party"])." AND t.`created_at_ts` > UNIX_TIMESTAMP()-60*60*24*7 AND LOWER(ht.`hashtag`) NOT IN (SELECT sw.`word` FROM stopwords sw WHERE sw.`lang` = 'de')
+                                        WHERE s.`party` = ".$DB_TWT->prep($_REQUEST["party"])." AND t.`created_at_ts` > UNIX_TIMESTAMP()-60*60*24*14 AND LOWER(ht.`hashtag`) NOT IN (SELECT sw.`word` FROM stopwords sw WHERE sw.`lang` = 'de')
                                         GROUP BY ht.`hashtag`
                                         ORDER BY COUNT(*) DESC;");
                 $res["data"] = $data; 
@@ -128,7 +128,7 @@
                                         JOIN tweets t ON t.`id` = ht.`tweet_id`
                                         JOIN searches_tweets st ON t.`id` = st.`tweet_id`
                                         JOIN searches s ON s.`id` = st.`search_id`
-                                        WHERE s.`party` = ".$DB_TWT->prep($_REQUEST["party"])." AND s.type = 'account' AND s.role = 'candidate' AND t.`created_at_ts` > UNIX_TIMESTAMP()-60*60*24*7 AND LOWER(ht.`hashtag`) NOT IN (SELECT sw.`word` FROM stopwords sw WHERE sw.`lang` = 'de')
+                                        WHERE s.`party` = ".$DB_TWT->prep($_REQUEST["party"])." AND s.type = 'account' AND s.role = 'candidate' AND t.`created_at_ts` > UNIX_TIMESTAMP()-60*60*24*14 AND LOWER(ht.`hashtag`) NOT IN (SELECT sw.`word` FROM stopwords sw WHERE sw.`lang` = 'de')
                                         GROUP BY ht.`hashtag`
                                         ORDER BY COUNT(*) DESC;");
                 $res["data"] = $data; 
@@ -146,7 +146,7 @@
                                         JOIN tweets t ON t.`id` = ht.`tweet_id`
                                         JOIN searches_tweets st ON t.`id` = st.`tweet_id`
                                         JOIN searches s ON s.`id` = st.`search_id`
-                                        WHERE s.`party` = ".$DB_TWT->prep($_REQUEST["party"])." AND s.type = 'account' AND s.role = 'party' AND t.`created_at_ts` > UNIX_TIMESTAMP()-60*60*24*7 AND LOWER(ht.`hashtag`) NOT IN (SELECT sw.`word` FROM stopwords sw WHERE sw.`lang` = 'de')
+                                        WHERE s.`party` = ".$DB_TWT->prep($_REQUEST["party"])." AND s.type = 'account' AND s.role = 'party' AND t.`created_at_ts` > UNIX_TIMESTAMP()-60*60*24*14 AND LOWER(ht.`hashtag`) NOT IN (SELECT sw.`word` FROM stopwords sw WHERE sw.`lang` = 'de')
                                         GROUP BY ht.`hashtag`
                                         ORDER BY COUNT(*) DESC;");
                 $res["data"] = $data; 

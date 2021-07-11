@@ -132,7 +132,7 @@
                 text: 'Häufig genutzte Hashtags'
             },
             subtitle: {
-                text: '(letzte 7 Tage)'
+                text: '(letzte 14 Tage)'
             },
             series: [
                 series
@@ -253,7 +253,7 @@
             if (series.hasOwnProperty(id)){
                 all_series.push({
                     type: "area",
-                    name: id,
+                    name: decodeURIComponent(id),
                     data: series[id],
                     stack: 0
                 });
@@ -274,9 +274,32 @@
                 type: "datetime",
                 plotBands: [{
                     color: 'rgba(0, 0, 0, 0.2)',
-                    from: new Date().getTime()-2*60*60*1000,
-                    to: new Date().getTime(),
-                    zIndex: -6
+                    from: new Date().getTime()-3*60*60*1000,
+                    to: new Date().getTime()+60*60*1000,
+                    zIndex: 6,
+                    label: {
+                        rotation: 90,
+                        text: "Live-Daten"
+                    }
+                }],
+                plotLines: [{
+                    color: '#FF0000',
+                    width: 2,
+                    value: new Date().getTime()-7.5*60*60*24*1000,
+                    zIndex: 6,
+                    dashStyle: "LongDash",
+                    label: {
+                        text: "Max. historische Suche via Twitter API"
+                    }
+                },{
+                    color: 'orange',
+                    width: 1,
+                    value: new Date("2021-07-09T02:00:00").getTime(),
+                    zIndex: 6,
+                    dashStyle: "LongDash",
+                    label: {
+                        text: "Ausfall Datenerfassung, Re-Sync läuft"
+                    }
                 }]
             },
             yAxis: [{
@@ -334,7 +357,7 @@
                     text: 'Häufig genutzte Hashtags im Zusammenhang mit ' + party.toUpperCase()
                 },
                 subtitle: {
-                    text: '(letzte 7 Tage)'
+                    text: '(letzte 14 Tage)'
                 },
                 series: [
                     series
@@ -374,7 +397,7 @@
                     text: 'Häufig verlinkte Domains im Zusammenhang mit ' + party.toUpperCase()
                 },
                 subtitle: {
-                    text: '(letzte 7 Tage)'
+                    text: '(letzte 14 Tage)'
                 },
                 series: [
                     series
@@ -408,7 +431,7 @@
                     text: 'Häufig genutzte Hashtags von Kandidat:innen von ' + party.toUpperCase()
                 },
                 subtitle: {
-                    text: '(letzte 7 Tage)'
+                    text: '(letzte 14 Tage)'
                 },
                 series: [
                     series
@@ -442,7 +465,7 @@
                     text: 'Häufig genutzte Hashtags von Partei-Accounts der ' + party.toUpperCase()
                 },
                 subtitle: {
-                    text: '(letzte 7 Tage)'
+                    text: '(letzte 14 Tage)'
                 },
                 series: [
                     series
